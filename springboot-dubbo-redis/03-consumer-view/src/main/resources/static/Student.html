@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html charset="UTF-8">
+<head>
+    <meta charset="UTF-8">
+    <!--<link href="favicon.ico" rel="shortcut icon">
+    <link rel="shortcut icon" href="#" />-->
+    <title>SpringBoot ,Dubbo, Redis, MyBatis练习</title>
+    <link href="bootstrap.min.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="jquery-1.11.1-min.js"></script>
+    <script type="text/javascript" src="bootstrap.min.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+    $(function (){
+        //给注册按钮添加单击事件
+        $("#addStudentBtn").click(function (){
+            //收集参数
+            var id = $.trim($("#studentId").val());
+            var name = $.trim($("#studentName").val());
+            var phone = $.trim($("#studentPhone").val());
+            var age = $.trim($("#studentAge").val());
+            //表单验证
+            if(id == ""){
+                alert("学号不能为空");
+                return;
+            }
+            if(name.length < 2){
+                alert("姓名长度至少为2");
+                return;
+            }
+            if (phone.length != 11 ){
+                alert("请输入正确的手机号");
+                return;
+            }
+            var regx = /^[1-9]\d*$/;
+            if(!regx.test(age) ){
+                alert("年龄必须为大于0的整数");
+                return;
+            }
+            //发送请求
+            $.ajax({
+                url:'student.do',
+                data:{
+                    id:id,
+                    name:name,
+                    phone:phone,
+                    age:age
+                },
+                type:'post',
+                dataType:'json',
+                success:function (data){
+                    if (data.code == "1"){
+                        alert("注册成功!");
+                    }else{
+                        alert(data.message);
+                    }
+                }
+
+            });
+        });
+        //给查询按钮添加单击事件
+        $("#queryStudentBtn").click(function (){
+            //收集参数
+            var id = $.trim($("#studentNumber").val());
+            //表单验证
+            if(id == ""){
+                alert("学号不能为空");
+                return;
+            }
+            //发送同步请求
+            window.location.href="queryStudent.do?id="+id;
+            //发送异步请求
+           /* $.ajax({
+                url: 'queryStudent.do',
+                data:{
+                    id:id,
+                },
+                type: 'get',
+                dataType: 'json',
+                success:function (data) {
+                   // alert(data.message);
+                }
+            });*/
+        });
+    });
+</script>
+
+    <form>
+        学号:<input type="text" id="studentId">
+        姓名:<input type="text" id="studentName">
+        手机号:<input type="text" id="studentPhone">
+        年龄:<input type="text" id="studentAge">
+    </form>
+    <button type="button" id="addStudentBtn">注册</button>
+    <br>
+    <form>
+        学号:<input type="text" id="studentNumber">
+    </form>
+    <button type="button" id="queryStudentBtn">查询</button>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neusoft.mapper.StudentMapper">
+    <select id="selectPhone" resultType="java.lang.Integer" >
+        select count(*) from student where phone=#{phone}
+    </select>
+    <insert id="insertStudent" parameterType="com.neusoft.model.Student" >
+        insert into student values(#{id},#{name},#{phone},#{age})
+    </insert>
+    <select id="selectStudent" resultType="com.neusoft.model.Student">
+        select id,name,phone,age from student where id=#{id}
+    </select>
+</mapper>
